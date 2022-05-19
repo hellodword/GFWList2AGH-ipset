@@ -23,12 +23,14 @@ jobs:
           sed -i '1i  tls://94.140.14.14' whitelist_full_combine.txt
           sed -i '1i  tls://94.140.15.15' whitelist_full_combine.txt
           sed -i '1i  quic://dns.adguard.com' whitelist_full_combine.txt
+          cat whitelist_full_combine.txt | grep -P ']https://doh.pub:443/dns-query$' | sed 's/]https:\/\/doh\.pub:443\/dns-query//' | sed 's/^\///' | sed 's/\/$//' | sed 's/\//,/g' | sed 's/$/\/adguard-home/' > ipset.txt
 
       - name: Run a multi-line script
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add whitelist_full_combine.txt
+          git add ipset.txt
           git commit -m ':sparkles:' || exit 0
           git branch -M assests
           git push -f -u origin assests
