@@ -31,5 +31,5 @@ jobs:
           git add whitelist_full_combine.txt
           git commit -m ':sparkles:' || exit 0
           git branch -M assests
-          git push -u origin assests
+          git push -f -u origin assests
           
