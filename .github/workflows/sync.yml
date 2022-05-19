@@ -1,0 +1,35 @@
+name: sync
+
+on:
+  schedule:
+      - cron: "0 1 * * *"
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run a multi-line script
+        run: |
+          wget https://github.com/hezhijie0327/GFWList2AGH/raw/main/gfwlist2adguardhome/whitelist_full_combine.txt
+          sed -i 's/\/doh\.pub\//\//' whitelist_full_combine.txt
+          echo "[/doh.pub/]114.114.114.114" >> whitelist_full_combine.txt
+          sed -i '1i  tls://1.0.0.1' whitelist_full_combine.txt
+          sed -i '1i  tls://8.8.4.4' whitelist_full_combine.txt
+          sed -i '1i  tls://94.140.14.14' whitelist_full_combine.txt
+          sed -i '1i  tls://94.140.15.15' whitelist_full_combine.txt
+          sed -i '1i  quic://dns.adguard.com' whitelist_full_combine.txt
+
+      - name: Run a multi-line script
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add whitelist_full_combine.txt
+          git commit -m ':sparkles:' || exit 0
+          git branch -M assests
+          git push -u origin assests
+          
