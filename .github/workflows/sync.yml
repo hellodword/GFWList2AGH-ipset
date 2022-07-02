@@ -25,6 +25,7 @@ jobs:
           sed -i '1i  quic://dns.adguard.com' whitelist_full_combine.txt
           sed -i -E 's/[a-zA-Z\d\.\-_]*jsdelivr[a-zA-Z\d\.\-_]+\///g' whitelist_full_combine.txt
           cat whitelist_full_combine.txt | grep -P ']https://doh.pub:443/dns-query$' | sed 's/]https:\/\/doh\.pub:443\/dns-query//' | sed 's/^\[\///' | sed 's/\/$//' | sed 's/\//,/g' | sed 's/$/\/adguard-home/' > ipset.txt
+          sed -i 's/^/doh.pub,/' ipset.txt
 
       - name: Run a multi-line script
         run: |
